@@ -78,7 +78,21 @@ export default function Header() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <Box mt={10} mb={5} textAlign="center">
-        Logo
+        <Button
+          sx={{
+            width: " 160px",
+            height: " 48px",
+            background: " #D9D4D5",
+            borderRadius: " 24px",
+            fontWeight:'bold',
+            "&:hover": {
+              background:
+                "#D9D4D5",
+            },
+          }}
+        >
+          Logo
+        </Button>
       </Box>
       <List>
         {["About", "Services", "Roadmap", "FAQ", "Statistic"].map(
@@ -144,7 +158,21 @@ export default function Header() {
                   fontSize: "20px",
                 }}
               >
-                Logo
+                <Button
+          sx={{
+            width: " 160px",
+            height: " 48px",
+            background: " #D9D4D5",
+            borderRadius: " 24px",
+            fontweight:'bold',
+            "&:hover": {
+              background:
+                "#D9D4D5",
+            },
+          }}
+        >
+          Logo
+        </Button>
               </Box>
             </Box>
             <Box

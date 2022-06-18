@@ -8,7 +8,6 @@ import RecordTable from "./components/RecordTable/Tabel";
 import Statistic from "./components/Statistics/Statistics";
 import Tier from "./components/Tiers/Tier";
 import NetworkChange from "./networkSwitch";
-
 const web3 = new Web3(
   Web3.givenProvider
     ? Web3.givenProvider
