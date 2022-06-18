@@ -3,6 +3,7 @@ import Web3 from "web3";
 import "./App.css";
 import Header from "./components/Header";
 import NetworkChange from "./networkSwitch";
+import Main from './components/Main/Main';
 const web3 = new Web3(
   Web3.givenProvider
     ? Web3.givenProvider
@@ -25,6 +26,7 @@ function App() {
     <>
       <NetworkChange open={open} setOpen={setOpen} />
       <Header />
+      <Main/>
     </>
   );
 }
