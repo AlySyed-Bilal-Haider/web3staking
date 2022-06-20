@@ -4,6 +4,7 @@ import "./App.css";
 import Footer from "./components/Footer";
 
 import Header from "./components/Header";
+import Main from "./components/Main/Main";
 import RecordTable from "./components/RecordTable/Tabel";
 import Statistic from "./components/Statistics/Statistics";
 import Tier from "./components/Tiers/Tier";
@@ -29,7 +30,8 @@ function App() {
   return (
     <>
       <NetworkChange open={open} setOpen={setOpen} />
-      {/* <Header /> */}
+      <Header />
+      <Main />
       <Tier />
       <Statistic />
       <RecordTable />

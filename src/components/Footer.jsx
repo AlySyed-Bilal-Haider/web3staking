@@ -10,7 +10,7 @@ import medium from "../assests/Medium.png";
 function Footer() {
   return (
     <Box
-      pt={30}
+      pt={35}
       pb={15}
       sx={{
         backgroundImage: `url(${footerBG})`,

@@ -84,10 +84,9 @@ export default function Header() {
             height: " 48px",
             background: " #D9D4D5",
             borderRadius: " 24px",
-            fontWeight:'bold',
+            fontWeight: "bold",
             "&:hover": {
-              background:
-                "#D9D4D5",
+              background: "#D9D4D5",
             },
           }}
         >
@@ -137,13 +136,13 @@ export default function Header() {
         height="92px"
         width="100%"
       >
-        <Container maxWidth="xl">
+        <Container>
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            pl={matches ? 0 : 5}
-            pr={matches ? 0 : 5}
+            // pl={matches ? 0 : 5}
+            // pr={matches ? 0 : 5}
           >
             <Box
               display="flex"
@@ -159,20 +158,19 @@ export default function Header() {
                 }}
               >
                 <Button
-          sx={{
-            width: " 160px",
-            height: " 48px",
-            background: " #D9D4D5",
-            borderRadius: " 24px",
-            fontweight:'bold',
-            "&:hover": {
-              background:
-                "#D9D4D5",
-            },
-          }}
-        >
-          Logo
-        </Button>
+                  sx={{
+                    width: " 160px",
+                    height: " 48px",
+                    background: " #D9D4D5",
+                    borderRadius: " 24px",
+                    fontweight: "bold",
+                    "&:hover": {
+                      background: "#D9D4D5",
+                    },
+                  }}
+                >
+                  Logo
+                </Button>
               </Box>
             </Box>
             <Box
