@@ -26,6 +26,7 @@
     "react-scripts": "4.0.3",
     "react-scroll": "^1.8.3",
     "react-toastify": "^7.0.4",
+    "swiper": "^8.2.5",
     "walletlink": "^2.4.0",
     "web-vitals": "^1.0.1",
     "web3": "^1.7.3",
@@ -43,6 +44,9 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
   },
   "browserslist": {
     "production": [

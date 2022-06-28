@@ -4,10 +4,11 @@ import "./App.css";
 import Footer from "./components/Footer";
 
 import Header from "./components/Header";
-import Main from "./components/Main/Main";
 import RecordTable from "./components/RecordTable/Tabel";
 import Statistic from "./components/Statistics/Statistics";
 import Tier from "./components/Tiers/Tier";
+import Swiper from "./components/Swiper/Swiper";
+
 import NetworkChange from "./networkSwitch";
 const web3 = new Web3(
   Web3.givenProvider
@@ -31,9 +32,9 @@ function App() {
     <>
       <NetworkChange open={open} setOpen={setOpen} />
       <Header />
-      <Main />
       <Tier />
       <Statistic />
+      <Swiper />
       <RecordTable />
       <Footer />
     </>

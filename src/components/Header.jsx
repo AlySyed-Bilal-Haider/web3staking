@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { Container, Button, Box, useMediaQuery, Paper } from "@mui/material";
 import Hidden from "@mui/material/Hidden";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
+// import List from "@mui/material/List";
+// import ListItem from "@mui/material/ListItem";
+// import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import clsx from "clsx";
@@ -55,7 +55,7 @@ export default function Header() {
     left: false,
   });
 
-  const matches = useMediaQuery("(max-width:960px)");
+  // const matches = useMediaQuery("(max-width:960px)");
   const matches1 = useMediaQuery("(max-width:1279px)");
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -80,8 +80,8 @@ export default function Header() {
       <Box mt={10} mb={5} textAlign="center">
         <Button
           sx={{
-            width: " 160px",
-            height: " 48px",
+            width: " 100px",
+            height: " 40px",
             background: " #D9D4D5",
             borderRadius: " 24px",
             fontWeight: "bold",
@@ -93,7 +93,7 @@ export default function Header() {
           Logo
         </Button>
       </Box>
-      <List>
+      {/* <List>
         {["About", "Services", "Roadmap", "FAQ", "Statistic"].map(
           (text, index) => (
             <ListItem button key={text}>
@@ -109,7 +109,7 @@ export default function Header() {
             </ListItem>
           )
         )}
-      </List>
+      </List> */}
       <Box mb={1} display="flex" justifyContent="center">
         {account ? (
           <StyledButtton onClick={() => disconnect()}>
@@ -159,8 +159,8 @@ export default function Header() {
               >
                 <Button
                   sx={{
-                    width: " 160px",
-                    height: " 48px",
+                    width: " 100px",
+                    height: " 40px",
                     background: " #D9D4D5",
                     borderRadius: " 24px",
                     fontweight: "bold",
@@ -186,7 +186,7 @@ export default function Header() {
                 alignItems="center"
               >
                 <Hidden mdDown>
-                  <Box
+                  {/* <Box
                     mr={6}
                     fontSize="20px"
                     style={{
@@ -240,7 +240,7 @@ export default function Header() {
                     }}
                   >
                     Statistic
-                  </Box>
+                  </Box> */}
                   {account ? (
                     <StyledButtton onClick={() => disconnect()}>
                       {account.slice(0, 4) + "..." + account.slice(-4)}

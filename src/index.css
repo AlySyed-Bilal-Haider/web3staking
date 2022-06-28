@@ -3,6 +3,10 @@
   color: #ffffff
 }
 
+
+body > iframe {
+  pointer-events: none !important;
+}
 /* .circle {
   position: fixed;
   transform: translate(-50%, -50%);

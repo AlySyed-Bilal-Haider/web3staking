@@ -7,9 +7,17 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { useContext } from "react";
+import { formatUnits, parseUnits } from "@ethersproject/units";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import { AppContext } from "../../utils";
+import {
+  useStakingContract,
+  useTokenContract,
+} from "../../ConnectivityAss/hooks";
+import { stakingAddress } from "../../ConnectivityAss/environment";
+import Loading from "../../loading";
 
 const StyledButtton = ({ children, ...props }) => {
   return (
@@ -23,7 +31,7 @@ const StyledButtton = ({ children, ...props }) => {
         color: "#fff",
         textTransform: "capitalize",
         height: "70px",
-        width: "100%",
+        width: "85%",
         fontSize: { xs: "22px", md: "30px" },
         fontFamily: "Roboto",
         "&:hover": {
@@ -37,12 +45,97 @@ const StyledButtton = ({ children, ...props }) => {
   );
 };
 
+const PlanButton = ({ children, ...props }) => {
+  return (
+    <Button
+      {...props}
+      sx={{
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        color: "#fff",
+        fontSize: { xs: "16px", md: "18px" },
+        width: "114px",
+        height: "40px",
+        marginTop: "15px",
+        marginLeft: "15px",
+        "&:hover": {
+          backgroundColor: "#2d292ea1",
+        },
+      }}
+    >
+      {children}
+    </Button>
+  );
+};
+
 function Tier() {
-  const { account, connect, disconnect } = useContext(AppContext);
   const matches = useMediaQuery("(min-width:720px)");
+  const [loading, setLoading] = useState(false);
+  const { account, signer, connect, disconnect } = useContext(AppContext);
+  const [plan, setPlan] = useState(0);
+  const [amount, setAmount] = useState("");
+  const [revenue, setRevenue] = useState(0);
+
+  let stakeContract = useStakingContract(signer);
+  console.log(stakeContract);
+  let tokenContract = useTokenContract(signer);
+
+  //---------Calculations of getting bonus-----------
+  const initBonus = async () => {
+    try {
+      let percentDivide = await stakeContract.percentDivider();
+      let bonus = await stakeContract.Bonus(+plan);
+      let reward = (+bonus / +percentDivide) * +amount;
+
+      setRevenue(+amount + +reward);
+      console.log("bonus", +bonus);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    initBonus();
+  }, [amount, plan]);
+  ////////////////////////////////////////////////////
+
+  //-----------function for stake the tokens and here we use approve
+  //  funtion of main token contract bcz first aprove than stake---------------
+
+  const stakeHandler = async () => {
+    if (account) {
+      if (!amount) {
+        toast.error("Please, enter the amount");
+      } else {
+        try {
+          setLoading(true);
+          let decimal = await tokenContract.decimals();
+          let approveForStake = await tokenContract.approve(
+            stakingAddress,
+            parseUnits(amount.toString(), +decimal)
+          );
+          await approveForStake.wait();
+
+          let stakeTransation = await stakeContract.stake(
+            parseUnits(amount.toString(), +decimal),
+            +plan
+          );
+          await stakeTransation.wait();
+          toast.success("transation confrimed");
+          setLoading(false);
+        } catch (error) {
+          setLoading(false);
+          console.log(error);
+        }
+      }
+    } else {
+      toast.error("Please connect your wallet first");
+    }
+  };
+
+  /////////////////////////////////////////////////////////////////////////////
 
   return (
     <Box my={10}>
+      <Loading loading={loading} />
       <Container maxWidth="md">
         <Box
           px={matches ? 10 : 4}
@@ -78,7 +171,7 @@ function Tier() {
               fontSize={{ xs: "18px", md: "25px" }}
               fontWeight="700"
             >
-              xSLIM Calculator
+              A.A Calculator
             </Typography>
             <Typography
               px={2}
@@ -86,7 +179,7 @@ function Tier() {
               textAlign="center"
               fontSize={{ xs: "14px", md: "16px" }}
             >
-              Calculate your xSLIM depending on the amount of staked tokens and
+              Calculate your A.A depending on the amount of staked tokens and
               your lock time.
             </Typography>
 
@@ -98,40 +191,19 @@ function Tier() {
                 alignItems={matches ? "center" : ""}
                 fontSize={{ xs: "18px", md: "25px" }}
               >
-                SLIM
+                A.A
                 <input
+                  placeholder="Enter amount"
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
                   style={{
                     height: "57px",
                     width: matches ? "244px" : "100%",
-                    textAlign: "right",
+                    // textAlign: "right",
                     color: "#C9C8C8",
-                    paddingRight: "40px",
-                    fontSize: matches ? "25px" : "18px",
-                    background: "#211A22",
-                    border: "none",
-                  }}
-                />
-              </Stack>
-
-              <Typography py={1} fontSize="12px" color="#C9C8C8">
-                and / or
-              </Typography>
-
-              <Stack
-                direction={matches ? "row" : "column"}
-                justifyContent="space-between"
-                alignItems={matches ? "center" : ""}
-                fontSize={{ xs: "18px", md: "25px" }}
-              >
-                SLIM-LP
-                <input
-                  style={{
-                    height: "57px",
-                    width: matches ? "244px" : "100%",
-                    textAlign: "right",
-                    color: "#C9C8C8",
-                    paddingRight: "40px",
-                    fontSize: matches ? "25px" : "18px",
+                    paddingLeft: "20px",
+                    fontSize: matches ? "20px" : "16px",
                     background: "#211A22",
                     border: "none",
                   }}
@@ -143,44 +215,33 @@ function Tier() {
               +
             </Box>
 
-            <Stack
-              py={2}
-              //   px={matches ? 4 : 2}
+            <Box
+              p={2}
               backgroundColor={"#120D13"}
-              direction="row"
-              justifyContent="space-around"
-              flexWrap={"wrap"}
-              alignItems="center"
               fontSize={{ xs: "18px", md: "25px" }}
             >
-              Lock token for
-              <Button
-                sx={{
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  color: "#fff",
-                  fontSize: { xs: "18px", md: "25px" },
-                  width: { xs: "50px", md: "114px" },
-                  height: { xs: "30px", md: "40px" },
-                  "&:hover": {
-                    backgroundColor: "#2d292ea1",
-                  },
-                }}
+              Lock token for:
+              <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent={{ xs: "center", md: "space-between" }}
               >
-                365
-              </Button>
-              <Typography fontSize={{ xs: "16px", md: "24px" }}>
-                days
-              </Typography>
-            </Stack>
+                <PlanButton onClick={() => setPlan(0)}>7 days</PlanButton>
+                <PlanButton onClick={() => setPlan(1)}>14 days</PlanButton>
+                <PlanButton onClick={() => setPlan(2)}>21 days</PlanButton>
+                <PlanButton onClick={() => setPlan(3)}>30 days</PlanButton>
+                <PlanButton onClick={() => setPlan(4)}>60 days</PlanButton>
+              </Box>
+            </Box>
 
             <Box textAlign="center" pt={2}>
               <ArrowDownwardIcon fontSize="large" />
             </Box>
             <Box textAlign={"center"}>
               <Box fontSize={{ xs: "30px", md: "42px" }}>
-                5,000.00
+                {revenue}
                 <spna style={{ fontSize: "14px", paddingLeft: "7px" }}>
-                  xSLIM
+                  A.A
                 </spna>
               </Box>
               <Box mt={1} fontSize={{ xs: "16px", md: "20px" }}>
@@ -190,7 +251,8 @@ function Tier() {
 
             {/* ------------connnect button---------- */}
             <Box mt={3} textAlign="center">
-              {account ? (
+              <StyledButtton onClick={stakeHandler}>Stake Tokens</StyledButtton>
+              {/* {account ? (
                 <StyledButtton onClick={() => disconnect()}>
                   {account.slice(0, 4) + "..." + account.slice(-4)}
                 </StyledButtton>
@@ -198,7 +260,7 @@ function Tier() {
                 <StyledButtton onClick={() => connect()}>
                   connect wallet
                 </StyledButtton>
-              )}
+              )} */}
             </Box>
           </Box>
         </Box>
