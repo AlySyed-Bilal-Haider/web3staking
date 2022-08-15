@@ -23,6 +23,43 @@ function Statistic() {
   const stakeContract = useStakingContract(signer);
   const tokenContract = useTokenContract(signer);
 
+// const [count,setcount]=useState(0);
+
+// const Increment=()=>{
+//   setcount(count+1);
+// }
+// useEffect(() => {
+//   const interval=setInterval(Increment, 1000);
+//   return () => {
+//    clearInterval(interval);
+//   }
+// }, []);
+// // output 1:
+
+// const increase=()=>{
+//   setcount(count+1);
+// }
+// useEffect(() => {
+//   const interval=setInterval(increase, 1000);
+//   return () => {
+//    clearInterval(interval);
+//   }
+// }, [count]);
+
+// // output: continue increment;
+
+// const incrementvalue=()=>{
+//   setcount(prevalue+prevalue+1);
+// }
+// useEffect(() => {
+//   const interval=setInterval(incrementvalue, 1000);
+//   return () => {
+//    clearInterval(interval);
+//   }
+// }, []);
+
+// // output: continue increment
+
   const init = async () => {
     if (account) {
       try {

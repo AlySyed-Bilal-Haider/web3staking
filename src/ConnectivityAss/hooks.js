@@ -13,6 +13,7 @@ const provider = new ethers.providers.JsonRpcProvider(
 );
 
 export const voidAccount = new ethers.VoidSigner(walletAddress, provider);
+
 function useContract(address, ABI, signer) {
   return React.useMemo(() => {
     if (signer) {
